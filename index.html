@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor de Tablas de Lotería</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div id="modalRecuperar" class="modal oculto">
+  <div class="modal-caja">
+    <h2>Se encontró una sesión anterior</h2>
+    <p>¿Deseas continuar donde te quedaste?</p>
+    <div class="modal-acciones">
+      <button id="continuarSesion" class="btn principal">Continuar</button>
+      <button id="nuevaSesion" class="btn peligro">Empezar de nuevo</button>
+    </div>
+  </div>
+</div>
+
+<main class="app">
+  <header class="encabezado">
+    <div>
+      <h1>Editor de Tablas de Lotería</h1>
+      <p>Crea, organiza e imprime tablas 4×4 y 5×5.</p>
+    </div>
+
+    <label class="tema-switch">
+      <input id="temaToggle" type="checkbox">
+      <span></span>
+      <b>Modo claro</b>
+    </label>
+  </header>
+
+  <section class="panel controles">
+    <div class="bloque">
+      <h2>Tipo de tabla</h2>
+      <div class="selector-modo">
+        <button id="modo4" class="modo activo" data-modo="4">4×4</button>
+        <button id="modo5" class="modo" data-modo="5">5×5</button>
+      </div>
+      <small id="descripcionModo">16 cartas: 15 diferentes y 1 repetida en el centro.</small>
+    </div>
+
+    <div class="bloque datos">
+      <h2>Datos</h2>
+      <label>Participante
+        <input id="participante" type="text" placeholder="Nombre">
+      </label>
+      <label>Partida
+        <input id="partida" type="number" min="1" value="1">
+      </label>
+    </div>
+
+    <div class="bloque codigo">
+      <h2>Código de tabla</h2>
+      <input id="codigo" type="text" placeholder="Escribe 16 números">
+      <button id="insertar" class="btn secundario">Insertar</button>
+    </div>
+
+    <div class="bloque acciones">
+      <h2>Acciones</h2>
+      <button id="generar" class="btn principal">Generar tabla</button>
+      <button id="limpiar" class="btn peligro">Limpiar</button>
+      <button id="descargarPng" class="btn">PNG</button>
+      <button id="descargarPdf" class="btn pdf">PDF</button>
+    </div>
+
+    <div class="bloque reemplazo">
+      <h2>Reemplazar una carta</h2>
+      <p>Selecciona una carta de la tabla y después elige su reemplazo en el catálogo.</p>
+      <input id="numeroCarta" type="number" min="1" max="54" placeholder="1–54">
+      <button id="reemplazar" class="btn advertencia">Reemplazar</button>
+    </div>
+
+    <div class="estado-guardado" id="estadoGuardado">Todo guardado</div>
+  </section>
+
+  <section class="zona-trabajo">
+    <div class="tabla-panel">
+      <div id="tabla" class="tabla tabla-4"></div>
+      <div id="estado" class="estado">Selecciona una carta para reemplazarla.</div>
+    </div>
+
+    <aside class="catalogo-panel">
+      <details open>
+        <summary>Numeración de las 54 cartas</summary>
+        <div class="catalogo-ayuda">Toca una carta para usarla como reemplazo.</div>
+        <div id="catalogo" class="catalogo"></div>
+      </details>
+    </aside>
+  </section>
+
+  <section class="panel grupo-panel">
+    <details>
+      <summary>Armar grupo de 3, 6 o 9 tablas</summary>
+      <div class="grupo-contenido">
+        <p>Elige el tamaño del grupo. Arma una tabla arriba y presiona <b>Agregar tabla actual</b>. Repite hasta completar el grupo.</p>
+
+        <label>Tamaño del grupo
+          <select id="cantidadGrupo">
+            <option value="3">3 tablas</option>
+            <option value="6">6 tablas</option>
+            <option value="9">9 tablas</option>
+          </select>
+        </label>
+
+        <div class="progreso">
+          <span id="textoProgreso">0 de 3 tablas</span>
+          <div><b id="barraProgreso"></b></div>
+        </div>
+
+        <div id="vistaGrupo" class="vista-grupo vacio">Todavía no hay tablas agregadas.</div>
+
+        <div class="grupo-descargas">
+          <button id="grupoPng" class="btn" disabled>Descargar grupo PNG</button>
+          <button id="grupoPdf" class="btn pdf" disabled>Descargar grupo PDF</button>
+        </div>
+      </div>
+    </details>
+
+    <div class="acciones-grupo">
+      <button id="agregarGrupo" class="btn secundario">Agregar tabla actual</button>
+      <button id="actualizarGrupo" class="btn advertencia oculto">Actualizar tabla</button>
+      <button id="cancelarEdicion" class="btn oculto">Cancelar edición</button>
+      <button id="limpiarGrupo" class="btn peligro">Limpiar grupo</button>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
